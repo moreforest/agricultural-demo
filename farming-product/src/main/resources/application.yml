@@ -1,0 +1,27 @@
+#server:
+#  servlet:
+#    context-path: /product
+#
+#spring:
+#  mvc:
+#    static-path-pattern: /**
+#  resources:
+#    static-locations: classpath:/static/
+#  thymeleaf:
+#    encoding: UTF-8
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    cache: false
+#
+#  datasource:
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://localhost:3306/farm_product?characterEncoding=utf-8&serverTimezone=GMT
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#
+#
+#mybatis:
+#  config-location: classpath:mybatis/mybatis.xml
+#  mapper-locations: classpath:mybatis/mapper/*.xml
+#  type-aliases-package: com.example.mapper

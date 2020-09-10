@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告诉mybatis关联哪一个mapper   -->
+<mapper namespace="com.example.mapper.admin.AdminMapper">
+    <!--  添加管理员账号  -->
+    <insert id="addAdmin" parameterType="com.example.pojo.Admin">
+        INSERT INTO
+            admin(username,password,status,created,last_login_time,is_deleted)
+        values (#{username},#{password},#{status},#{created},#{lastLoginTime},#{isDeleted})
+    </insert>
+
+    <!--  查询所有管理员  -->
+    <select id="selectAllAdmin" resultType="com.example.pojo.Admin">
+        SELECT
+            id,username,password,status,created,last_login_time,is_deleted
+        FROM
+            admin
+    </select>
+
+    <!--  查询总记录数  -->
+    <select id="allCount" resultType="long">
+        SELECT count(*) FROM admin
+    </select>
+
+    <!--  动态查询
+        1.where标签：去除第一个条件的and
+     -->
+    <select id="queryAdminByWhere" parameterType="com.example.vo.index.AdminVo" resultType="com.example.pojo.Admin">
+        SELECT
+        id,username,password,status,created,last_login_time,is_deleted
+        FROM
+        admin
+        <where>
+            <if test="username!=null">
+                username=#{username}
+                <if test="password!=null">
+                    and password=#{password}
+                </if>
+            </if>
+            <if test="status!=null">
+                and status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <!--    通过id查询用户 - -->
+    <select id="findAdminById" parameterType="long" resultType="com.example.pojo.Admin">
+        SELECT username FROM admin WHERE id=#{id}
+    </select>
+
+    <!--  根据id删除管理员  -->
+    <delete id="delAdminById" parameterType="long">
+        DELETE FROM admin WHERE id=#{id}
+    </delete>
+
+    <!--  修改用户 password status lastLoginTime  -->
+    <update id="updateAdmin" parameterType="com.example.pojo.Admin">
+        UPDATE admin
+        <!--如写了set标签就不用写set语句，去除最后一个条件的逗号-->
+        <set>
+            <!--test 判断内容写上pojo的属性名-->
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="lastLoginTime!=null">
+                last_login_time=#{lastLoginTime},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+</mapper>

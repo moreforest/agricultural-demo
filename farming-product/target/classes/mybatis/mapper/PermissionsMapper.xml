@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.admin.PermissionsMapper">
+
+
+    <select id="queryAllPermissionByUser" parameterType="Integer" resultType="com.example.pojo.Permissions">
+		SELECT
+			p.*
+		FROM
+			admin_role ar,
+			role_permissions rp,
+			permissions p
+		WHERE
+			 ar.admin_id=#{id}
+		AND rp.role_id = ar.role_id
+		AND rp.permission_id = p.id
+    </select>
+
+
+    <select id="findAll" resultType="com.example.pojo.Permissions">
+		select * from permissions
+	</select>
+
+
+</mapper>
