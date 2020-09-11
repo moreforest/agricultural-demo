@@ -30,9 +30,11 @@ public class MenuServiceImpl implements MenuService {
         // 1.如果是超级管理员，查询所有权限
         if ("admin".equals(admin.getUsername())) {
             permissions = permissionsMapper.findAll();
+//            System.out.println("超级管理员" + permissions.size());
         } else {
             // 2.不是超级管理员，查询其对应权限
             permissions = permissionsMapper.queryAllPermissionByUser(admin.getId());
+//            System.out.println("不是超级管理员" + permissions.size());
         }
 
         //3. 查找所有的一级权限
@@ -68,6 +70,7 @@ public class MenuServiceImpl implements MenuService {
                     // 添加对应子权限
                     Menu child = new Menu(p.getId(), p.getPermissionName(), p.getPermissionUrl(), p.getParentId());
                     m.getSubMenu().add(child);
+//                    System.out.println(m.getMenuName() + "子菜单" + child.getMenuName());
                 }
             }
         }

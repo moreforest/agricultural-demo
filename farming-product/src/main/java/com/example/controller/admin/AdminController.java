@@ -7,6 +7,7 @@ import com.example.result.Result;
 import com.example.service.admin.AdminService;
 import com.example.utils.PageUtil;
 import com.example.vo.index.QueryInfo;
+import com.example.vo.index.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,19 +27,18 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
+    /**-----------------页面跳转-----------------------*/
+
     /**
-     * 管理员页面列表
+     * 管理员页面列表 -- 搜索功能
      *
      * @param model
      * @return
      */
     @RequestMapping("/list")
-    public String list(QueryInfo queryInfo, Model model) {
+    public String list(QueryInfo queryInfo, Model model, SearchVo searchVo) {
         // 要查看所有的管理员数据-分页
-//        List<Admin> adminList = adminService.findAll();
-//        model.addAttribute("adminList", adminList);
-        PageUtil<Admin> pageUtil = adminService.selectAllAdmin(queryInfo);
-//        System.out.println(pageUtil.getContent().get(0).getUsername());
+        PageUtil<Admin> pageUtil = adminService.selectAllAdmin(queryInfo, searchVo);
         model.addAttribute("pageUtil", pageUtil);
         return "/admin/admin-list";
     }
@@ -59,11 +59,14 @@ public class AdminController {
      * @return
      */
     @RequestMapping("/editPage")
-    public String editPage(Long id, Model model) {
+    public String editPage(Integer id, Model model) {
         Admin admin = adminService.findAdminById(id);
         model.addAttribute("admin", admin);
         return "/admin/admin-edit";
     }
+
+    /**-----------------数据操作-----------------------*/
+
 
     /**
      * 添加管理员
@@ -75,25 +78,33 @@ public class AdminController {
     @PostMapping(value = "/addAdmin")
     @ResponseBody //返回JSON数据
     public Result addAdmin(Admin admin) throws CustomerException {
-        adminService.addAdmin(admin);
-        return BuildResult.buildSuccess(null);
+        return adminService.addAdmin(admin);
     }
+
+    /**
+     * 修改管理员
+     *
+     * @param admin
+     * @return
+     * @throws CustomerException
+     */
+    @PostMapping(value = "/editAdmin")
+    @ResponseBody //返回JSON数据
+    public Result editAdmin(Admin admin) throws CustomerException {
+        return adminService.editAdmin(admin);
+    }
+
 
     /**
      * 通过id 删除管理员账号
      *
-     * @param id 管理员id
+     * @param data 管理员id数组
      * @return
      */
     @PostMapping(value = "/delAdmin")
-    public Result delAdmin(Long id) {
-        try {
-            adminService.delAdminById(id);
-            return BuildResult.buildSuccess("删除成功!!");
-        } catch (CustomerException e) {
-            e.printStackTrace();
-            return BuildResult.buildFail("删除失败", 200);
-        }
+    @ResponseBody
+    public Result delAdmin(Integer[] data) throws CustomerException {
+        return adminService.delAdminById(data);
     }
 
 

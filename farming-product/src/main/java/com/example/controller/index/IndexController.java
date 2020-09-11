@@ -20,7 +20,7 @@ public class IndexController {
     @RequestMapping("/index")
     public String index() {
         //如果方法的返回值类型 用的String，代表转发到指定名称的模板页面
-        return "/index";
+        return "index";
     }
 
     /**

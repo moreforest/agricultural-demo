@@ -4,5 +4,28 @@
 <!--  讨论管理模块  -->
 <mapper namespace="com.example.mapper.discuss.DiscussMapper">
 
+    <!--  查询所有管理员  -->
+    <select id="selectAllAdmin" parameterType="map" resultType="com.example.pojo.Admin">
+        SELECT
+        id,product_id,customer_id,comment_content,comment_status,comment_time
+        FROM
+        discuss
+        <where>
+            <if test="searchname!=null">
+                username like concat('%',#{searchname},'%')
+            </if>
+            <if test="start!=null">
+                AND created like concat('%',#{start},'%')
+            </if>
+            <if test="end!=null">
+                AND last_login_time like concat('%',#{end},'%')
+            </if>
+        </where>
+        limit #{startIndex},#{pageSize}
+    </select>
 
+    <!--  查询总记录数  -->
+    <select id="allCount" resultType="Long">
+        SELECT count(*) FROM discuss
+    </select>
 </mapper>

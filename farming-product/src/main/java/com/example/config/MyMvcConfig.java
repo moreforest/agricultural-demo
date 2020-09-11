@@ -1,7 +1,7 @@
 package com.example.config;
 
-import com.example.interceptor.LoginInterceptor;
-import com.example.interceptor.PermissionInterceptor;
+//import com.example.interceptor.LoginInterceptor;
+//import com.example.interceptor.PermissionInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -22,11 +22,11 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 登录拦截  链式编程    以下资源不拦截
-        registry.addInterceptor(new LoginInterceptor()).excludePathPatterns("/login/*")
-                .excludePathPatterns("/css/**", "/fonts/**", "/images/**", "/js/**", "/lib/**");
+//        registry.addInterceptor(new LoginInterceptor()).excludePathPatterns("/login/*")
+//                .excludePathPatterns("/css/**", "/fonts/**", "/images/**", "/js/**", "/lib/**");
 
         // 权限拦截
-        registry.addInterceptor(new PermissionInterceptor()).excludePathPatterns("/login/*","/index","/welcome","/noPermission","/menu/*")
-                .excludePathPatterns("/css/**","/fonts/**","/images/**","/js/**","/lib/**");
+//        registry.addInterceptor(new PermissionInterceptor()).excludePathPatterns("/login/*","/index","/welcome","/noPermission","/menu/*")
+//                .excludePathPatterns("/css/**","/fonts/**","/images/**","/js/**","/lib/**");
     }
 }

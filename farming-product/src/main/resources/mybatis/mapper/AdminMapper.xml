@@ -11,22 +11,45 @@
     </insert>
 
     <!--  查询所有管理员  -->
-    <select id="selectAllAdmin" resultType="com.example.pojo.Admin">
+    <select id="selectAllAdmin" parameterType="map" resultType="com.example.pojo.Admin">
         SELECT
-            id,username,password,status,created,last_login_time,is_deleted
+        id,username,password,status,created,last_login_time,is_deleted
         FROM
-            admin
+        admin
+        <where>
+            <if test="searchname!=null">
+                username like concat('%',#{searchname},'%')
+            </if>
+            <if test="start!=null">
+                AND created like concat('%',#{start},'%')
+            </if>
+            <if test="end!=null">
+                AND last_login_time like concat('%',#{end},'%')
+            </if>
+        </where>
+        limit #{startIndex},#{pageSize}
     </select>
 
     <!--  查询总记录数  -->
-    <select id="allCount" resultType="long">
+    <select id="allCount" parameterType="com.example.vo.index.SearchVo" resultType="Long">
         SELECT count(*) FROM admin
+        <where>
+            <if test="searchname!=null">
+                username like concat('%',#{searchname},'%')
+            </if>
+            <if test="start!=null">
+                AND created like concat('%',#{start},'%')
+            </if>
+            <if test="end!=null">
+                AND last_login_time like concat('%',#{end},'%')
+            </if>
+        </where>
     </select>
 
     <!--  动态查询
         1.where标签：去除第一个条件的and
      -->
-    <select id="queryAdminByWhere" parameterType="com.example.vo.index.AdminVo" resultType="com.example.pojo.Admin">
+    <select id="queryAdminByWhere" parameterType="map" resultType="com.example.pojo.Admin">
         SELECT
         id,username,password,status,created,last_login_time,is_deleted
         FROM
@@ -45,12 +68,12 @@
     </select>
 
     <!--    通过id查询用户 - -->
-    <select id="findAdminById" parameterType="long" resultType="com.example.pojo.Admin">
+    <select id="findAdminById" parameterType="Integer" resultType="com.example.pojo.Admin">
         SELECT username FROM admin WHERE id=#{id}
     </select>
 
     <!--  根据id删除管理员  -->
-    <delete id="delAdminById" parameterType="long">
+    <delete id="delAdminById" parameterType="Integer">
         DELETE FROM admin WHERE id=#{id}
     </delete>
 
@@ -72,5 +95,14 @@
         </set>
         WHERE id=#{id}
     </update>
+
+    <!--  批量删除 管理员  -->
+    <delete id="delAdminByIds" parameterType="Integer">
+        DELETE FROM admin WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
 
 </mapper>

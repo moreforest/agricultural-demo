@@ -7,9 +7,9 @@ package com.example.vo.index;
  **/
 public class QueryInfo {
     // 当前页数
-    private Integer page;
+    private Integer page = 1;
     // 分页大小
-    private Integer pageSize;
+    private Integer pageSize = 5;
 
     // 计算开始序号
     private Integer startIndex;
