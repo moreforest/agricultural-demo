@@ -1,10 +1,12 @@
 package com.example.controller.discuss;
 
-import com.example.pojo.Admin;
+import com.example.exception.CustomerException;
+import com.example.result.Result;
 import com.example.service.discuss.DiscussService;
 import com.example.utils.PageUtil;
+import com.example.vo.discuss.DiscussVo;
+import com.example.vo.discuss.DiscussVoResult;
 import com.example.vo.index.QueryInfo;
-import com.example.vo.index.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,20 +28,58 @@ public class DiscussController {
     /**
      * -----------------页面跳转-----------------------
      */
-
+    /**
+     * 跳转到所有评论列表
+     *
+     * @param queryInfo
+     * @param model
+     * @param discussVo
+     * @return
+     */
     @RequestMapping("/list")
-    public String toList(QueryInfo queryInfo, Model model, SearchVo searchVo) {
-        // 要查看所有的管理员数据-分页
-        PageUtil<Admin> pageUtil = discussService.selectAllDiscuss(queryInfo, searchVo);
-        System.out.println("Controller:" + pageUtil.getContent().size());
-        System.out.println(pageUtil.getContent().get(0).getUsername());
-        System.out.println(pageUtil.getContent().get(1).getUsername());
-        System.out.println(pageUtil.getContent().get(2).getUsername());
-        System.out.println(pageUtil.getContent().get(3).getUsername());
-        Model util = model.addAttribute("pageUtil", pageUtil);
+    public String toList(QueryInfo queryInfo, Model model, DiscussVo discussVo) {
+        // 要查看所有的评论列表数据-分页
+        PageUtil<DiscussVoResult> pageUtil = discussService.selectAllDiscuss(queryInfo, discussVo);
+        model.addAttribute("pageUtil", pageUtil);
+        return "/discuss/discuss-list";
+    }
+
+    @RequestMapping("/nameList")
+    public String toNameList(QueryInfo queryInfo, Model model, DiscussVo discussVo) {
+        // 要查看所有的评论列表数据-分页
+        discussVo.setStatus(0);
+        PageUtil<DiscussVoResult> pageUtil = discussService.selectAllDiscuss(queryInfo, discussVo);
+        model.addAttribute("pageUtil", pageUtil);
         return "/discuss/discuss-list";
     }
 
 
     /**-----------------数据处理-----------------------*/
+
+
+    /**
+     * 拉黑评论
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/blackDiscuss")
+    @ResponseBody
+    public Result blackDiscuss(Integer id) throws CustomerException {
+        return discussService.blackDiscuss(id, 0);
+    }
+
+    /**
+     * 删除评论
+     *
+     * @param id
+     * @return
+     * @throws CustomerException
+     */
+    @RequestMapping("/delDiscuss")
+    @ResponseBody
+    public Result delDiscuss(Integer id) throws CustomerException {
+        return discussService.delDiscuss(id);
+    }
+
 }

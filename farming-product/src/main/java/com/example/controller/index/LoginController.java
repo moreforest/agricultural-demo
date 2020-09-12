@@ -58,5 +58,17 @@ public class LoginController {
 
     }
 
+    /**
+     * 退出登录
+     *
+     * @param httpSession
+     * @return
+     */
+    @RequestMapping("/loginOut")
+    public String loginOut(HttpSession httpSession) {
+        httpSession.invalidate();//让ession过期
+        return "redirect:/login/loginPage";//退出登录后重定向到登录页面
+    }
+
 
 }

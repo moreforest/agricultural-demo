@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>用户列表</title>
+    <title>角色列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -35,7 +35,7 @@
 <div class="x-body">
     <!--  搜索栏  -->
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" method="post" th:action="@{/admin/list}">
+        <form class="layui-form layui-col-md12 x-so" method="post" th:action="@{/role/list}">
             <input class="layui-input" placeholder="创建时间" name="start" id="start">
             <input class="layui-input" placeholder="最后登录时间" name="end" id="end">
             <input type="text" name="searchname" placeholder="请输入用户名" autocomplete="off" class="layui-input">
@@ -222,41 +222,6 @@
             // }
         );
     }
-
-
-    //   搜索功能
-    // layui.use(['form', 'layer'], function () {
-    //     $ = layui.jquery;
-    //     var form = layui.form
-    //         , layer = layui.layer;
-    //     //监听提交
-    //     form.on('submit(search)', function (data) {
-    //         console.log("搜索1" + data);
-    //         //发异步，把数据提交后台
-    //         var param = data.field;
-    //         console.log(param);
-    //         $.ajax({
-    //             url: "[[@{/admin/list}]]",
-    //             dataType: "JSON",
-    //             type: "POST",
-    //             data: param,
-    //             success: function (res) {
-    //                 if (res.status == "success") {
-    //                     // 添加成功
-    //                     console.log("ok")
-    //                     // 刷新父级页面
-    //                     parent.location.replace(parent.location.href);
-    //                 } else {
-    //                     alert("no ok");
-    //                 }
-    //             }, error: function () {
-    //                 alert("error");
-    //             }
-    //         });
-    //         return false;
-    //     });
-    // });
-
 
 </script>
 
